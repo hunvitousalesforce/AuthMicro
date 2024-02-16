@@ -1,0 +1,15 @@
+services:
+  identitydb:
+    image: postgres
+    restart: always
+    user: postgres
+    volumes:
+      - devdb-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: identitydb
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - 5500:5432
+
+volumes:
+  devdb-data:

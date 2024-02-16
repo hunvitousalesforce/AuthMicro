@@ -1,0 +1,6 @@
+@AuthMicro.Product_HostAddress = http://localhost:5289
+
+GET {{AuthMicro.Product_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
