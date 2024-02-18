@@ -4,5 +4,5 @@ namespace AuthMicro.Identity;
 
 public class ApplicationUser : IdentityUser
 {
-    
+
 }

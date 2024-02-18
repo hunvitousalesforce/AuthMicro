@@ -1,71 +1,24 @@
-using System.Text;
 using AuthMicro.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+using Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
-var config = builder.Configuration;
 
-builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = config["Jwt:Issuer"],
-        ValidAudience = config["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!))
-    };
-});
-            
+
+builder.Services.AddJwt(builder.Configuration);
 builder.Services.AddAuthorizationBuilder();
 
-
-builder.Services.AddDbContext<AppIdentityDbContext>(options => {
-    options.UseNpgsql(config.GetConnectionString("Default"));
-});
-
-builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
-    .AddEntityFrameworkStores<AppIdentityDbContext>();
-
-
+builder.Services.AddDbContext<AppIdentityDbContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("Default")); });
+builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddEntityFrameworkStores<AppIdentityDbContext>();
+builder.Services.AddScoped<IAuthentication, AuthenticationService>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
-{
-    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
-    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
-    });
-    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
+builder.Services.AddSwagger();
+
+builder.Services.AddDefaultServices();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -76,8 +29,51 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapIdentityApi<ApplicationUser>();
+
+app.MapPost("/api/v1/auth/login", async ([FromBody] LoginRequest request, IAuthentication authManager) =>
+{
+    if (request == null)
+        return Results.BadRequest();
+    var result = await authManager.LoginAsync(request);
+    return Results.Ok(result);
+});
+
+app.MapPost("/api/v1/auth/register", async ([FromBody] RegisterRequest request, IAuthentication authManager) =>
+{
+    if (request == null)
+        return Results.BadRequest();
+    var result = await authManager.RegisterAsync(request);
+    return Results.Ok(result);
+});
+
+var products = new List<Product>()
+{
+    new Product("Apple", "M1 Air", 1200.0f),
+    new Product("MSI", "TF 200", 700f)
+};
+
+app.MapGet("/products", () =>
+{
+    return products;
+}).RequireAuthorization();
+
 
 app.Run();
+
+
+
+public class Product
+{
+    public string Model { get; set; } = string.Empty;
+    public string Brand { get; set; } = string.Empty;
+    public float Price { get; set; }
+
+    public Product(string model, string brand, float price)
+    {
+        Model = model;
+        Brand = brand;
+        Price = price;
+    }
+}
 
 

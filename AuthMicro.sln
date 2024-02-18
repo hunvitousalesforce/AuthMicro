@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthMicro.Identity", "src\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthMicro.Product", "src\AuthMicro.Product\AuthMicro.Product.csproj", "{7CB0E386-AE3B-46B4-8CAA-4D405FC9D974}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{D8849A19-1DF0-4556-BE91-9C3A5B659C70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{64F29944-8293-4428-8E9D-109546C53AEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{7CB0E386-AE3B-46B4-8CAA-4D405FC9D974}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CB0E386-AE3B-46B4-8CAA-4D405FC9D974}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CB0E386-AE3B-46B4-8CAA-4D405FC9D974}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8849A19-1DF0-4556-BE91-9C3A5B659C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8849A19-1DF0-4556-BE91-9C3A5B659C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8849A19-1DF0-4556-BE91-9C3A5B659C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8849A19-1DF0-4556-BE91-9C3A5B659C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64F29944-8293-4428-8E9D-109546C53AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64F29944-8293-4428-8E9D-109546C53AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64F29944-8293-4428-8E9D-109546C53AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64F29944-8293-4428-8E9D-109546C53AEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,5 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6A44D86C-2A38-4897-8E63-8AC1D44342BA} = {134300E2-25F5-4E8B-BEB7-0602921F63E5}
 		{7CB0E386-AE3B-46B4-8CAA-4D405FC9D974} = {134300E2-25F5-4E8B-BEB7-0602921F63E5}
+		{D8849A19-1DF0-4556-BE91-9C3A5B659C70} = {134300E2-25F5-4E8B-BEB7-0602921F63E5}
+		{64F29944-8293-4428-8E9D-109546C53AEF} = {134300E2-25F5-4E8B-BEB7-0602921F63E5}
 	EndGlobalSection
 EndGlobal
