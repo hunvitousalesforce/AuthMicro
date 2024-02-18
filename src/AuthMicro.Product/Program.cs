@@ -4,11 +4,8 @@ using Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddJwt(builder.Configuration);
-builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwagger();
-
 builder.Services.AddDefaultServices();
 
 var app = builder.Build();

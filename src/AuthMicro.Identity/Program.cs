@@ -8,15 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddJwt(builder.Configuration);
-builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddDbContext<AppIdentityDbContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("Default")); });
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddEntityFrameworkStores<AppIdentityDbContext>();
 builder.Services.AddScoped<IAuthentication, AuthenticationService>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwagger();
-
 builder.Services.AddDefaultServices();
 
 var app = builder.Build();

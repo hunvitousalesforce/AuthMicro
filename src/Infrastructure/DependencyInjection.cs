@@ -11,10 +11,6 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddDefaultServices(this IServiceCollection Services)
     {
-        return Services;
-    }
-    public static IServiceCollection AddSwagger(this IServiceCollection Services)
-    {
         Services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
@@ -45,10 +41,8 @@ public static class DependencyInjection
         return Services;
     }
 
-
     public static IServiceCollection AddJwt(this IServiceCollection Services, IConfiguration config)
     {
-
         Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,6 +60,7 @@ public static class DependencyInjection
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)) // Must match the key from Identity service
                 };
             });
+        Services.AddAuthorizationBuilder();
         return Services;
     }
 }

@@ -13,11 +13,11 @@ public class AuthenticationService : IAuthentication
     private readonly ILogger<ApplicationUser> _Logger;
     private readonly IPasswordHasher<ApplicationUser> _PasswordHasher;
     public AuthenticationService(
-    UserManager<ApplicationUser> userManager,
-    SignInManager<ApplicationUser> signInManager,
-    ILogger<ApplicationUser> logger,
-    IPasswordHasher<ApplicationUser> passwordHasher
-)
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        ILogger<ApplicationUser> logger,
+        IPasswordHasher<ApplicationUser> passwordHasher
+    )
     {
         _UserManager = userManager;
         _SignInManager = signInManager;
@@ -49,12 +49,8 @@ public class AuthenticationService : IAuthentication
     {
         // check if user already exist
         var userFromDb = await _UserManager.FindByEmailAsync(request.Email);
-
         if (userFromDb != null)
-        {
             throw new UserAlreadyExistException("this user already exists");
-        }
-
         try
         {
             var user = new ApplicationUser
@@ -62,13 +58,10 @@ public class AuthenticationService : IAuthentication
                 Email = request.Email,
                 UserName = request.Email,
             };
-
             user.PasswordHash = _PasswordHasher.HashPassword(user, request.Password);
             var result = await _UserManager.CreateAsync(user);
             if (result.Succeeded)
-            {
                 return true;
-            }
         }
         catch (Exception e)
         {
